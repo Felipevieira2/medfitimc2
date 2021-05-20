@@ -5,14 +5,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IMC Cálculo</title>
-    <meta name="facebook-domain-verification" content="dmul7k34k1v4nsi55jas5knv1t04hd" />
-    <link rel="icon" href="/favicon.ico" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5 .0/css/font-awesome.min.css" />
+    <meta name="facebook-domain-verification" content="dmul7k34k1v4nsi55jas5knv1t04hd" />     
     <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./styles/globals.css">
 </head>
 
 <body>
-    <!-- This example requires Tailwind CSS v2.0+ -->
+    <!--  require Tailwind CSS v2.0+ -->
     <div class="p-4 bg-gradient-to-r from-blue-100">
         <div class="container mx-auto md:px-14">
             <div class="items-center flex flex-wrap">
@@ -31,7 +30,7 @@
                         <form id="formIMC" action="/resultado" method="POST" class="mt-6">
                             <div class="my-5 text-sm"><label for="nome"
                                     class="block mb-2 text-sm text-gray-600 dark:text-gray-400 ">Nome
-                                    *</label><input type="text" id="nome"
+                                    *</label><input type="text" id="nome" 
                                     class="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 border-2rounded-md focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500"
                                     placeholder="Nome"><label for="nome" id="errorName"
                                     class="block mb-2 font-thin text-xs text-red-600 dark:text-gray-400 "></label>
@@ -112,11 +111,17 @@
     </div>
 
     <script>
-
-        function formatAltura () {
-            console.log('oi')
-        }
-
+        document.querySelector('#phone').addEventListener('keypress', (e) => {
+            e.target.value = e.target.value.replace(/\D/g, ""); 
+            e.target.value = e.target.value.replace(/^(\d{2})(\d)/, "$1-$2")
+        
+        });
+        document.querySelector('#altura').addEventListener('keypress', (e) => {
+            e.target.value = e.target.value.replace(/\D/g, "");
+            e.target.value = e.target.value.replace(/(\d)(\d{2})$/, "$1,$2");
+            e.target.value = e.target.value.replace(/(?=(\d{3})+(\D))\B/g, ".");            
+        });
+       
         function setLead() {                 
             document.getElementById('nome').classList.replace("border-red-600", "border-gray-300");
             document.getElementById('phone').classList.replace("border-red-600", "border-gray-300");
@@ -152,15 +157,15 @@
           return 
         }
     
-        if ( altura == "" || Number(altura) <= 0 ) {
+        if ( altura == "" || Number(altura) <= 0 || altura.match(/^[A-Za-z]+$/) ) {
           document.getElementById("altura").focus();
           document.getElementById('altura').classList.remove("border-gray-300");
           document.getElementById('altura').classList.add("border-red-600");         
-          document.getElementById("errorAltura").innerText = 'Altura informado inválido';   
+          document.getElementById("errorAltura").innerText = 'Altura informada inválido';   
           return 
         }
     
-        if ( peso == "" || Number(peso) <= 0 ) {
+        if ( peso == "" || Number(peso) <= 0 || peso.match(/^[A-Za-z]+$/)  ) {
           document.getElementById("peso").focus();
           document.getElementById('peso').classList.remove("border-gray-300");
           document.getElementById('peso').classList.add("border-red-600");         
@@ -198,9 +203,7 @@
         
     
         //await postLead(newLead);
-    
-        window.localStorage.setItem('lead', JSON.stringify(newLead));
-        
+                   
         let newLead = { 
             nome,
             phone,
@@ -211,6 +214,10 @@
             textResult2,
             result
         };  
+     
+        window.localStorage.setItem('lead', JSON.stringify(newLead));
+        window.location.href = "./resultado.html"
+        
       }
     </script>
 </body>
